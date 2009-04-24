@@ -1,0 +1,11 @@
+Revision history for Perl extension Lingua::JA::Categorize
+
+0.00003  2009/03/29
+        - fix a bug
+
+0.00002  2009/03/29
+        - correct some mistake of POD
+        - use Class::Data::ConfigHash in base class
+
+0.00001  2008/11/24
+        - original version
