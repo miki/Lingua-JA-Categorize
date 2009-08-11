@@ -1,6 +1,9 @@
 Revision history for Perl extension Lingua::JA::Categorize
 
 0.00004  2009/08/11
+        - redefine Algorithm::NaiveBayes::Util::rescale
+
+0.00004  2009/08/11
         - brush up the eg/server.pl
         - add more_train script ( eg/more_train )
 
