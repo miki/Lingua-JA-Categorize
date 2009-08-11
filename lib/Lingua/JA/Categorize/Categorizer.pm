@@ -6,6 +6,25 @@ use base qw( Lingua::JA::Categorize::Base );
 
 __PACKAGE__->mk_accessors($_) for qw( brain );
 
+sub import {
+    use Algorithm::NaiveBayes::Util;
+    use List::Util qw(min max sum);
+    no warnings 'redefine';
+    *Algorithm::NaiveBayes::Util::rescale = sub {
+        my ($scores) = @_;
+        my $min      = min( values %$scores );
+        my $sum      = sum( values %$scores );
+        $sum -= $min * ( keys %$scores );
+        for ( sort { $scores->{$b} <=> $scores->{$a} } keys %$scores ) {
+            $scores->{$_} = ( $scores->{$_} - $min ) / $sum;
+        }
+        my $max = max( values %$scores );
+        for ( sort { $scores->{$b} <=> $scores->{$a} } keys %$scores ) {
+            $scores->{$_} = sprintf( "%0.2f", $scores->{$_} / $max );
+        }
+        return $scores;
+    };
+}
 
 sub new {
     my $class = shift;
@@ -14,10 +33,10 @@ sub new {
     return $self;
 }
 
-sub categorize{
-    my $self = shift;
+sub categorize {
+    my $self     = shift;
     my $word_set = shift;
-    my $result = $self->brain->predict( attributes => $word_set );
+    my $result   = $self->brain->predict( attributes => $word_set );
     return $result;
 }
 

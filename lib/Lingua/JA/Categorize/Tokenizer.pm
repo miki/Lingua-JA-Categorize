@@ -6,7 +6,6 @@ use base qw( Lingua::JA::Categorize::Base );
 
 __PACKAGE__->mk_accessors($_) for qw( calc );
 
-
 sub new {
     my $class = shift;
     my $self  = $class->SUPER::new(@_);
@@ -33,11 +32,11 @@ sub tokenize {
       . q{)?};
     $text =~ s/$http_URL_regex//g;
 
-    my $list      = $self->calc->tfidf($text)->list($threshold);
+    my $list = $self->calc->tfidf($text)->list($threshold);
     my %hash;
-    for(@$list){
-        my( $word, $score ) = each(%$_);
-        $hash{$word} = $score; 
+    for (@$list) {
+        my ( $word, $score ) = each(%$_);
+        $hash{$word} = $score;
     }
     return \%hash;
 }

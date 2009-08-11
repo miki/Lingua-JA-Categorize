@@ -4,7 +4,7 @@ use warnings;
 use base qw( Lingua::JA::Categorize::Base );
 
 sub word_set {
-    my $self = shift;
+    my $self     = shift;
     my $word_set = $self->{word_set};
     my @list;
     for ( sort { $word_set->{$b} <=> $word_set->{$a} } keys %$word_set ) {
@@ -17,7 +17,7 @@ sub score {
     my $self = shift;
     my $num  = shift;
     $num ||= 3;
-    unless($self->word_set->[0]){
+    unless ( $self->word_set->[0] ) {
         return undef;
     }
     my $score = $self->{score};

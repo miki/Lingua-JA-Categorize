@@ -25,7 +25,7 @@ sub categorize {
     my $text       = shift;
     my $return_num = shift || 20;
     my $word_set   = $self->tokenizer->tokenize( \$text, $return_num );
-    my $score = $self->categorizer->categorize($word_set);
+    my $score      = $self->categorizer->categorize($word_set);
     return Lingua::JA::Categorize::Result->new(
         word_set => $word_set,
         score    => $score
