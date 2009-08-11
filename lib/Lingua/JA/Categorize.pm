@@ -9,7 +9,7 @@ use base qw( Lingua::JA::Categorize::Base );
 
 __PACKAGE__->mk_accessors($_) for qw( tokenizer categorizer generator );
 
-our $VERSION = '0.00003';
+our $VERSION = '0.00004';
 
 sub new {
     my $class = shift;

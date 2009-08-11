@@ -7,9 +7,15 @@ use Data::Dumper;
 my $categorizer = Lingua::JA::Categorize->new;
 $categorizer->load("sample.bin");
 
-my $feature = HTML::Feature->new;
+my $feature = HTML::Feature->new(
+    engines => [
+        'HTML::Feature::Engine::LDRFullFeed',
+        'HTML::Feature::Engine::GoogleADSection',
+        'HTML::Feature::Engine::TagStructure',
+    ]
+);
 
-while(1){
+while (1) {
     print "Input URL : ";
     my $url = <STDIN>;
     chomp $url;

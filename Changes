@@ -1,5 +1,9 @@
 Revision history for Perl extension Lingua::JA::Categorize
 
+0.00004  2009/08/11
+        - brush up the eg/server.pl
+        - add more_train script ( eg/more_train )
+
 0.00003  2009/03/29
         - fix a bug
 

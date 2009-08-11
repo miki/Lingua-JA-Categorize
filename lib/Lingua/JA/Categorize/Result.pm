@@ -24,7 +24,7 @@ sub score {
     my @list;
     my $i = 0;
     for ( sort { $score->{$b} <=> $score->{$a} } keys %$score ) {
-        push( @list, { $_ => $score->{$_} } );
+        push( @list, { $_ => $score->{$_} } ) if $score->{$_} > 0;
         $i++;
         last if ( $i == $num );
     }

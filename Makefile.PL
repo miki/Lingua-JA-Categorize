@@ -9,7 +9,7 @@ requires 'Lingua::JA::TFIDF';
 requires 'Lingua::JA::Expand';
 
 requires 'YAML';
-requires 'HTML::Feature';
+requires 'HTML::Feature', '3.00005';
 requires 'POE';
 requires 'POE::Component::Server::HTTP';
 requires 'Template';
