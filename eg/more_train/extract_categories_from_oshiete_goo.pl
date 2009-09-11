@@ -21,15 +21,18 @@ for my $i ( 0 .. $num ) {
         my $a = shift @html;
         if ( $a =~ m|<a href="(/category/.+)">(.+)</a>| ) {
             $l = $2;
+            $l =~ s/\[.+\] //g;
         }
     }
-
     if ( $rec and $rec =~ m|<h3 class="oshiete-McategoryIndex">| ) {
         if ( $rec =~ m|<a href="(.+)">(.+)</a>| ) {
             my $url = $1;
             $m = $2;
             if ( $1 =~ /^http/ ) {
                 $s = $m;
+                $l =~ s/\[.+\] //g;
+                $m =~ s/\[.+\] //g;
+                $s =~ s/\[.+\] //g;
                 $data->{$l}->{$m}->{$s} = $url;
             }
         }
@@ -41,6 +44,9 @@ for my $i ( 0 .. $num ) {
                 $m = $2;
                 if ( $1 =~ /^http/ ) {
                     $s = $m;
+                    $l =~ s/\[.+\] //g;
+                    $m =~ s/\[.+\] //g;
+                    $s =~ s/\[.+\] //g;
                     $data->{$l}->{$m}->{$s} = $url;
                 }
             }

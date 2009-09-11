@@ -10,6 +10,7 @@ use Template;
 use CGI;
 use HTTP::Request::AsCGI;
 use FindBin;
+use List::MoreUtils qw(any);
 use lib "$FindBin::RealBin/more_train/lib";
 
 my $yaml = YAML::Load( join '', <DATA> );
@@ -103,28 +104,33 @@ sub categorize {
     if ( $q->param("expand") ) {
         my $expander = Lingua::JA::Expand->new;
         my $word_set = $expander->expand( $text, 20 );
-        my $score    = $categorizer->categorizer->categorize($word_set);
+        my $parsed   = $categorizer->categorizer->categorize($word_set);
         $result = Lingua::JA::Categorize::Result->new(
-            word_set => $word_set,
-            score    => $score
+            word_set   => $word_set,
+            score      => $parsed->{score},
+            no_matches => $parsed->{no_matches},
+            matches    => $parsed->{matches},
         );
     }
     else {
-        $result = $categorizer->categorize($text);
+        $result = $categorizer->categorize($text,20);
     }
     my $tt       = $heap->{tt};
     my $template = $template->{score_table};
 
-    my $word_set = $result->word_set;
-    my $score    = $result->score;
+    my $word_set   = $result->word_set;
+    my $score      = $result->score;
+    my $matches    = $result->matches;
+    my $no_matches = $result->no_matches;
 
     #-- word_setの整形処理
     my @word_set;
     for (@$word_set) {
         my ( $key, $value ) = each %$_;
         my $item;
-        $item->{word}  = $key;
-        $item->{count} = $value;
+        $item->{word}     = $key;
+        $item->{count}    = $value;
+        $item->{no_match} = 1 if any { $_ eq $key } @$no_matches;
         push( @word_set, $item );
     }
 
@@ -307,7 +313,7 @@ template:
         <h2>特徴語（ use Lingua::JA::TFIDF ）</h2>
         <table border=2px width=800>
             [% FOREACH item IN word_set %]
-            <tr><td><a href="javascript:void(0)" onclick="do_expand('[% item.word %]');"> [% item.word %] </a></td><td> [% item.count %] </td></tr>
+            <tr><td><a href="javascript:void(0)" onclick="do_expand('[% item.word %]');"> [% item.word %] </a>[% IF item.no_match %] 　　( no match !! )[% END %]</td><td> [% item.count %] </td></tr>
             [% END %]
         </table>
         <br><br>

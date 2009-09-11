@@ -4,7 +4,8 @@ use blib;
 use Lingua::JA::Categorize;
 use YAML;
 
-my $data        = YAML::Load( join '', <DATA> );
+my $data        = YAML::LoadFile('./more_train/config.yaml');
+#my $data        = YAML::Load( join '', <DATA> );
 my $generator   = Lingua::JA::Categorize->new;
 my $save_file   = "sample.bin";
 

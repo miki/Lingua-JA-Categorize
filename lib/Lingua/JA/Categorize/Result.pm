@@ -31,6 +31,18 @@ sub score {
     return \@list;
 }
 
+sub no_matches {
+    my $self = shift;
+    my $no_matches = $self->{no_matches};
+    return $no_matches;
+}
+
+sub matches {
+    my $self = shift;
+    my $matches = $self->{matches};
+    return $matches;
+}
+
 1;
 __END__
 
@@ -57,6 +69,10 @@ Lingua::JA::Categorize::Result is a result storage of L::J::C working
 =head2 score  
 
 =head2 word_set
+
+=head2 matches 
+
+=head2 no_matches 
 
 =head1 AUTHOR
 
