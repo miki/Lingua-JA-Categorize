@@ -4,10 +4,14 @@ use warnings;
 use base qw(Class::Accessor::Fast Class::Data::ConfigHash);
 use Carp;
 
+__PACKAGE__->mk_accessors($_) for qw(context);
+
 sub new {
     my $class  = shift;
-    my $self = $class->SUPER::new({@_});
-    __PACKAGE__->config(@_);
+    my %args   = @_;
+    my $config = delete $args{config};
+    my $self   = $class->SUPER::new( {@_} );
+    $self->config($config) if $config;
     return $self;
 }
 
@@ -24,8 +28,6 @@ sub mk_virtual_methods {
     }
     return ();
 }
-
-
 
 1;
 

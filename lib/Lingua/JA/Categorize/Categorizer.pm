@@ -2,6 +2,7 @@ package Lingua::JA::Categorize::Categorizer;
 use strict;
 use warnings;
 use Algorithm::NaiveBayes;
+use Lingua::JA::Categorize::Result;
 use base qw( Lingua::JA::Categorize::Base );
 
 __PACKAGE__->mk_accessors($_) for qw( brain );
@@ -64,7 +65,14 @@ sub categorize {
     my $score      = $self->brain->predict( attributes => $word_set );
     my $no_matches = $self->brain->{no_match_features};
     my $matches    = $self->brain->{match_features};
-    return { score => $score, matches => $matches, no_matches => $no_matches };
+    my $result     = Lingua::JA::Categorize::Result->new(
+        context    => $self->context,
+        score      => $score,
+        matches    => $matches,
+        no_matches => $no_matches,
+        word_set   => $word_set,
+    );
+    return $result;
 }
 
 sub save {

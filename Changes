@@ -1,5 +1,9 @@
 Revision history for Perl extension Lingua::JA::Categorize
 
+0.01001  2009/10/06
+        - add confidence() method on Lingua::JA::Categorize::Result
+        - and some changes(slightly)
+
 0.00004  2009/08/11
         - redefine Algorithm::NaiveBayes::Util::rescale
 

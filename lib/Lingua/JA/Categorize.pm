@@ -4,19 +4,21 @@ use warnings;
 use Lingua::JA::Categorize::Tokenizer;
 use Lingua::JA::Categorize::Categorizer;
 use Lingua::JA::Categorize::Generator;
-use Lingua::JA::Categorize::Result;
 use base qw( Lingua::JA::Categorize::Base );
 
 __PACKAGE__->mk_accessors($_) for qw( tokenizer categorizer generator );
 
-our $VERSION = '0.00005';
+our $VERSION = '0.01001';
 
 sub new {
     my $class = shift;
     my $self  = $class->SUPER::new(@_);
-    $self->tokenizer( Lingua::JA::Categorize::Tokenizer->new );
-    $self->categorizer( Lingua::JA::Categorize::Categorizer->new );
-    $self->generator( Lingua::JA::Categorize::Generator->new );
+    $self->tokenizer(
+        Lingua::JA::Categorize::Tokenizer->new( context => $self ) );
+    $self->categorizer(
+        Lingua::JA::Categorize::Categorizer->new( context => $self ) );
+    $self->generator(
+        Lingua::JA::Categorize::Generator->new( context => $self ) );
     return $self;
 }
 
@@ -26,12 +28,7 @@ sub categorize {
     my $return_num = shift || 20;
     my $word_set   = $self->tokenizer->tokenize( \$text, $return_num );
     my $result     = $self->categorizer->categorize($word_set);
-    return Lingua::JA::Categorize::Result->new(
-        word_set   => $word_set,
-        score      => $result->{score},
-        no_matches => $result->{no_matches},
-        matches    => $result->{matches},
-    );
+    return $result;
 }
 
 sub generate {
@@ -51,6 +48,11 @@ sub save {
     my $self      = shift;
     my $save_file = shift;
     $self->categorizer->save($save_file);
+}
+
+sub train {
+    my $self = shift;
+    $self->categorizer->train(@_);
 }
 
 1;
@@ -91,6 +93,10 @@ The constructor method.
 
 This method accepts two arguments, a $text and an optional $return_num.
 It return Lingua::JA::Categorize::Result object.
+
+=head2 train
+
+Training method of bayean filter. 
 
 =head2 generate($configuration_data)
 
